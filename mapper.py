@@ -22,7 +22,6 @@ def get_attrakdiff_mappings():
             f'somewhat {neg}': -1,
             f'quite {neg}': -1,
             neg: -2,
-            # Typos found in data
             f'somwhat {pos}': 1,
             f'qute {pos}': 1,
             f'somwhat {neg}': -1,
@@ -42,7 +41,7 @@ def get_scm_mapping():
         'applicable': 1,
         'neutral': 0,
         'does not apply': -1,
-        'not applicable': -1, # handle variations
+        'not applicable': -1, 
     }
 
 def map_attrakdiff_df(df):
@@ -50,7 +49,6 @@ def map_attrakdiff_df(df):
     df_mapped = df.copy()
     for col, mapping in mappings.items():
         if col in df_mapped.columns:
-            # First strip whitespace from all cells and convert to lower case
             df_mapped[col] = df_mapped[col].str.strip().str.lower()
             df_mapped[col] = df_mapped[col].map(mapping)
     return df_mapped
@@ -59,7 +57,6 @@ def map_scm_df(df):
     mapping = get_scm_mapping()
     df_mapped = df.copy()
     for col in df_mapped.columns:
-        # First strip whitespace from all cells and convert to lower case
         df_mapped[col] = df_mapped[col].str.strip().str.lower()
         df_mapped[col] = df_mapped[col].map(mapping)
     return df_mapped

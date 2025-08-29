@@ -16,12 +16,8 @@ from adjustText import adjust_text
 attrakdiff_path = Path('attrakdiff')
 scm_path = Path('scm')
 
-
 attrakdiff_dfs = {}
 scm_dfs = {}
-
-
-
 
 for csv_file in attrakdiff_path.glob('*.csv'):
 
@@ -32,8 +28,7 @@ for csv_file in attrakdiff_path.glob('*.csv'):
         print(f"Loaded attrakdiff data for: {app_name} - Shape: {df.shape}")
     except Exception as e:
         print(f"Error loading {csv_file}: {e}")
-        
-        
+              
 for csv_file in scm_path.glob('*.csv'):
     app_name = csv_file.stem.replace('scm', '')
     try:
@@ -42,8 +37,7 @@ for csv_file in scm_path.glob('*.csv'):
         print(f"Loaded SCM data for: {app_name} - Shape: {df.shape}")
     except Exception as e:
         print(f"Error loading {csv_file}: {e}")
-        
-        
+          
 print("Available applications in attrakdiff data:")
 for app_name in sorted(attrakdiff_dfs.keys()):
     print(f"  - {app_name}")
@@ -51,8 +45,6 @@ for app_name in sorted(attrakdiff_dfs.keys()):
 print("\nAvailable applications in SCM data:")
 for app_name in sorted(scm_dfs.keys()):
     print(f"  - {app_name}")
-    
-    
     
 from mapper import map_attrakdiff_df, map_scm_df
 
@@ -72,9 +64,6 @@ if 'youtube' in attrakdiff_dfs_mapped:
 if 'youtube' in scm_dfs_mapped:
     print("\nMapped SCM data for YouTube:")
     print(scm_dfs_mapped['youtube'].head())
-
-
-
 
 common_apps = ['atm', 'campusprinterterminal', 'chatgpt', 'dbnavigator', 'excel', 'facebook', 'gemini', 'gmail', 'googlemaps', 'instagram', 'moodlelms', 'nintendoswitch', 'snapchat', 'spotify', 'supermarket', 'youtube']
 
@@ -101,9 +90,9 @@ apps_to_process = [app for app in common_apps if app in attrakdiff_dfs_mapped an
 n_apps = len(apps_to_process)
 
 n_cols = 2
-n_rows = (n_apps + n_cols - 1) // n_cols # ceiling division
+n_rows = (n_apps + n_cols - 1) // n_cols 
 fig, axes = plt.subplots(n_rows, n_cols, figsize=(10 * n_cols, 8 * n_rows))
-axes = axes.flatten() # Flatten the 2D array of axes to easily iterate over it
+axes = axes.flatten() 
 
 for i, app in enumerate(apps_to_process):
     attrakdiff_df = attrakdiff_dfs_mapped[app]
@@ -154,9 +143,7 @@ output_dir.mkdir(exist_ok=True)
 attrak_means = []
 for app, df in attrakdiff_dfs_mapped.items():
     if app in common_apps:
-        # Pragmatic: average of PQ items
         pq = df[['impractical - practical', 'complicated - simple']].mean(axis=1).mean()
-        # Hedonic: average of HQ-S + HQ-I items
         hq_s = df[['dull - creative', 'boring - exciting']].mean(axis=1).mean()
         hq_i = df[['tacky - stylish', 'amateurish - professional']].mean(axis=1).mean()
         hq = np.mean([hq_s, hq_i])
